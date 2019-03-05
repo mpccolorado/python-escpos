@@ -68,20 +68,6 @@ class Usb(Escpos):
         self.idVendor = self.device.idVendor
         self.idProduct = self.device.idProduct
 
-        check_driver = None
-
-        try:
-            check_driver = self.device.is_kernel_driver_active(0)
-        except NotImplementedError:
-            pass
-
-        if check_driver is None or check_driver:
-            try:
-                self.device.detach_kernel_driver(0)
-            except usb.core.USBError as e:
-                if check_driver is not None:
-                    print("Could not detatch kernel driver: {0}".format(str(e)))
-
         try:
             self.device.set_configuration()
             self.device.reset()
